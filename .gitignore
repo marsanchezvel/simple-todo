@@ -1,0 +1,7 @@
+# BMAD — personal config (do not version)
+_bmad/config.user.toml
+_bmad/custom/config.user.toml
+
+# BMAD — generated artifacts
+_bmad-output/
+_bmad/render/
