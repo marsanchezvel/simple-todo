@@ -17,4 +17,4 @@ npm run preview      # serve the production bundle locally
 
 ## Notes
 
-GitHub Pages deployment is deferred — the theme toggle (light/dark) ships with this iteration.
+Published at https://marsanchezvel.github.io/simple-todo/.
