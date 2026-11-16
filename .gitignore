@@ -5,3 +5,7 @@ _bmad/custom/config.user.toml
 # BMAD — generated artifacts
 _bmad-output/
 _bmad/render/
+
+# Node / Vite
+node_modules/
+dist/
