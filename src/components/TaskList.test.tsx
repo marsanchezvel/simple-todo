@@ -47,9 +47,10 @@ describe('TaskList state patterns (I/O matrix)', () => {
         completedAt: 5_000,
       },
     ])
-    expect(screen.getByText('Nada pendiente 🎉')).toBeVisible()
+    expect(screen.getByText('Nada pendiente')).toBeVisible()
+    expect(screen.queryByText('Nada pendiente 🎉')).not.toBeInTheDocument()
     expect(screen.queryByText('Pendientes')).not.toBeInTheDocument()
-    expect(screen.getByText('Completadas')).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Completadas' })).toBeVisible()
     expect(screen.getByRole('checkbox', { name: 'Regar plantas' }).getAttribute('aria-checked')).toBe('true')
   })
 
@@ -73,7 +74,7 @@ describe('TaskList state patterns (I/O matrix)', () => {
       { id: 'c-1', name: 'Completada', done: true, createdAt: 1_000, completedAt: 3_000 },
     ])
     await user.click(within(screen.getByRole('checkbox', { name: 'Pendiente' }).closest('li')!).getByRole('button', { name: 'Eliminar Pendiente' }))
-    expect(screen.getByText('Nada pendiente 🎉')).toBeVisible()
+    expect(screen.getByText('Nada pendiente')).toBeVisible()
     expect(screen.getByRole('checkbox', { name: 'Completada' })).toBeVisible()
   })
 })

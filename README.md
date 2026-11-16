@@ -4,6 +4,8 @@ A lightweight task list for the browser: create, edit, complete and delete named
 
 ## Getting started
 
+Node.js 24 or newer is required.
+
 ```sh
 npm install
 npm run dev          # dev server at http://localhost:5173

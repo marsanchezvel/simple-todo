@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { TaskList } from './TaskList'
@@ -116,6 +116,18 @@ describe('TaskRow (rendered through TaskList like production)', () => {
 
       expect(repo.stored[0]?.name).toBe('Regar plantas')
       expect(screen.queryByLabelText('Editar tarea')).not.toBeInTheDocument()
+    })
+
+    it('does not save when Enter confirms an IME composition', () => {
+      const repo = renderList()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Editar Regar plantas' }))
+      const input = screen.getByLabelText('Editar tarea')
+      fireEvent.change(input, { target: { value: 'かな' } })
+      fireEvent.keyDown(input, { key: 'Enter', keyCode: 229, isComposing: true })
+
+      expect(repo.stored[0]?.name).toBe('Regar plantas')
+      expect(input).toBeInTheDocument()
     })
 
     it('saves on blur', async () => {

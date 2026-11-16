@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { useTaskStore } from '../store/task-store'
 
 /**
@@ -9,6 +9,7 @@ import { useTaskStore } from '../store/task-store'
 export function Composer() {
   const { addTask } = useTaskStore()
   const [value, setValue] = useState('')
+  const composing = useRef(false)
   const canAdd = value.trim().length > 0
 
   const submit = () => {
@@ -19,10 +20,16 @@ export function Composer() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
-    // IME: pressing Enter to confirm a composition must not submit
-    // half-composed text (event.nativeEvent.isComposing).
-    if ((event.nativeEvent as KeyboardEvent).isComposing) return
+    // A form submit's native event is a SubmitEvent, which has no
+    // isComposing. The composition listeners are what actually know.
+    if (composing.current) return
     submit()
+  }
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // Enter that confirms an IME composition (keyCode 229) must not submit.
+    const native = event.nativeEvent
+    if (native.isComposing || native.keyCode === 229) event.preventDefault()
   }
 
   return (
@@ -31,6 +38,13 @@ export function Composer() {
         type="text"
         value={value}
         onChange={(event) => setValue(event.target.value)}
+        onCompositionStart={() => {
+          composing.current = true
+        }}
+        onCompositionEnd={() => {
+          composing.current = false
+        }}
+        onKeyDown={handleKeyDown}
         placeholder="¿Qué tienes que hacer?"
         aria-label="Nueva tarea"
         className="min-w-0 flex-1 transition-theme rounded-input border border-muted/25 bg-surface px-4 py-3 text-base text-text placeholder:text-muted/70 outline-none focus:border-primary focus:shadow-[0_0_12px_rgba(251,113,133,0.35)] focus:ring-2 focus:ring-primary"

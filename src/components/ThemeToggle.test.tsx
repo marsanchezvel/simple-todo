@@ -1,7 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import App from '../App'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { THEME_STORAGE_KEY } from '../hooks/use-theme'
+import { setPrefersColorSchemeDark } from '../test/setup'
 
 function renderApp() {
   render(<App />)
@@ -10,6 +13,7 @@ function renderApp() {
 afterEach(() => {
   localStorage.clear()
   document.documentElement.classList.remove('dark')
+  setPrefersColorSchemeDark(false)
 })
 
 describe('ThemeToggle', () => {
@@ -46,13 +50,26 @@ describe('ThemeToggle', () => {
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBeNull()
   })
 
-  it('boots dark when there is no stored choice and the system preference is dark', async () => {
-    const { setPrefersColorSchemeDark } = await import('../test/setup')
+  it('boots dark when there is no stored choice and the system preference is dark', () => {
     setPrefersColorSchemeDark(true)
     renderApp()
     expect(document.documentElement.classList.contains('dark')).toBe(true)
     expect(screen.getByRole('button', { name: 'Cambiar a modo claro' })).toBeVisible()
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBeNull()
-    setPrefersColorSchemeDark(false)
+  })
+
+  it('keeps a stored light choice when the system preference is dark', () => {
+    setPrefersColorSchemeDark(true)
+    localStorage.setItem(THEME_STORAGE_KEY, 'light')
+    renderApp()
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
+    expect(screen.getByRole('button', { name: 'Cambiar a modo oscuro' })).toBeVisible()
+  })
+
+  it('pins the pre-paint script to the same storage key and light rule', () => {
+    const indexHtml = readFileSync(resolve(process.cwd(), 'index.html'), 'utf8')
+    expect(indexHtml).toContain(`localStorage.getItem('${THEME_STORAGE_KEY}')`)
+    expect(indexHtml).toContain("stored === 'dark'")
+    expect(indexHtml).toContain("stored !== 'light'")
   })
 })

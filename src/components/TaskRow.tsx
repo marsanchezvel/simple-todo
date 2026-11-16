@@ -34,6 +34,9 @@ export function TaskRow({ task }: { task: Task }) {
   }, [editing])
 
   const handleEditKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // Enter confirming an IME composition must not close the edit.
+    const native = event.nativeEvent
+    if (native.isComposing || native.keyCode === 229) return
     if (event.key === 'Enter') saveEdit()
     if (event.key === 'Escape') cancelEdit()
   }

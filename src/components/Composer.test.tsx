@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { Composer } from './Composer'
@@ -87,5 +87,31 @@ describe('Composer', () => {
     await user.type(input, 'Segunda{Enter}')
 
     expect(repo.stored.map((task) => task.name)).toEqual(['Primera', 'Segunda'])
+  })
+
+  it('does not create a task while an IME composition is in progress', () => {
+    const repo = renderComposer()
+    const input = screen.getByLabelText('Nueva tarea')
+    fireEvent.change(input, { target: { value: 'かな' } })
+    fireEvent.compositionStart(input)
+    fireEvent.submit(input.closest('form')!)
+
+    expect(repo.stored).toHaveLength(0)
+    expect(input).toHaveValue('かな')
+  })
+
+  it('cancels the Enter key that confirms an IME composition', () => {
+    renderComposer()
+    const input = screen.getByLabelText('Nueva tarea')
+    let prevented = false
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        prevented = event.defaultPrevented
+      },
+      { once: true },
+    )
+    fireEvent.keyDown(input, { key: 'Enter', keyCode: 229, isComposing: true })
+    expect(prevented).toBe(true)
   })
 })

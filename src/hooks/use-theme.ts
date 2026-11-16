@@ -26,13 +26,14 @@ function systemPrefersDark(): boolean {
 }
 
 function initialTheme(): Theme {
-  // The inline <head> script (index.html) resolved the same rule — stored
-  // choice, else system preference — and applied the class before React
-  // mounted. Read that applied class as the single source of truth so the
-  // two copies of the rule cannot desync; fall back to the system query
-  // only when no class is present (e.g. test environments).
+  // The inline <head> script (index.html) already applied a stored or system
+  // dark choice as the `dark` class. Absence of the class is ambiguous: the
+  // script leaves it off for a stored 'light' choice AND when it never ran
+  // (tests). Honor an explicit stored choice before the system preference.
   if (document.documentElement.classList.contains(DARK_CLASS)) return 'dark'
-  if (readStoredTheme() === 'dark') return 'dark'
+  const stored = readStoredTheme()
+  if (stored === 'dark') return 'dark'
+  if (stored === 'light') return 'light'
   return systemPrefersDark() ? 'dark' : 'light'
 }
 

@@ -3,12 +3,12 @@ import { TaskRow } from './TaskRow'
 
 function SectionLabel({ id, children }: { id: string; children: string }) {
   return (
-    <div
+    <h2
       id={id}
       className="mb-2 mt-2 text-[13px] font-semibold tracking-[0.08em] text-muted uppercase"
     >
       {children}
-    </div>
+    </h2>
   )
 }
 
@@ -47,7 +47,7 @@ export function TaskList() {
       )}
 
       {hasTasks && pendingTasks.length === 0 && (
-        <EmptyState emoji="🎉" text="Nada pendiente 🎉" />
+        <EmptyState emoji="🎉" text="Nada pendiente" />
       )}
 
       {completedTasks.length > 0 && (
