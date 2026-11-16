@@ -50,7 +50,7 @@ export function TaskRow({ task }: { task: Task }) {
         aria-checked={task.done}
         aria-label={task.name}
         onClick={() => toggleTask(task.id)}
-        className="relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-transparent transition-colors before:absolute before:-inset-2.5 before:rounded-full before:content-[''] hover:border-primary/70 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 aria-checked:border-primary aria-checked:bg-primary aria-checked:text-white"
+        className="relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-muted text-transparent transition-colors before:absolute before:-inset-2.5 before:rounded-full before:content-[''] hover:border-primary/70 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 aria-checked:border-primary aria-checked:bg-primary aria-checked:text-white"
       >
         <svg
           viewBox="0 0 16 16"
