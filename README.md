@@ -1,6 +1,6 @@
 # simple-todo
 
-A lightweight task list for the browser: create, edit, complete and delete named tasks. The list survives reloads via `localStorage` — no backend, no accounts. UI microcopy is Spanish.
+A lightweight task list for the browser: create, edit, complete and delete named tasks. The list survives reloads via `localStorage` — no backend, no accounts. UI microcopy is Spanish. Light and dark theme with a header toggle (system preference by default, choice persisted).
 
 ## Getting started
 
@@ -15,4 +15,4 @@ npm run preview      # serve the production bundle locally
 
 ## Notes
 
-Theme toggle (light/dark) and GitHub Pages deployment are deferred — this iteration ships light mode only.
+GitHub Pages deployment is deferred — the theme toggle (light/dark) ships with this iteration.

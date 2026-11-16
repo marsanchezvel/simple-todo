@@ -13,6 +13,23 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%E2%9C%85</text></svg>"
     />
     <title>simple-todo — Lista de tareas</title>
+    <script>
+      // Apply the persisted theme (or the system preference) before React
+      // mounts, so the first paint already matches the user's theme.
+      // Keep in sync with src/hooks/use-theme.ts (THEME_STORAGE_KEY);
+      // a module import is impossible here — this must run pre-bundle.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('simple-todo.theme')
+          var dark =
+            stored === 'dark' ||
+            (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (e) {
+          /* blocked storage: stay light this visit */
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

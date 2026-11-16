@@ -3,7 +3,8 @@
 
 /*
  * Design tokens from DESIGN.md, mapped as CSS variables (Tailwind 4 @theme).
- * Light mode only this iteration — dark theme deferred.
+ * Light values here; the dark re-theme overrides the same variables under
+ * html.dark below.
  */
 @theme {
   --font-sans: "Nunito Variable", "Nunito", ui-sans-serif, system-ui, sans-serif;
@@ -21,6 +22,26 @@
   --radius-input: 12px;
 
   --shadow-soft: 0 4px 16px rgb(124 58 237 / 0.1);
+}
+
+/*
+ * Dark theme (DESIGN.md Colors, dark column): a true re-theme via the same
+ * CSS variables — the gradient utility and shadow adapt automatically.
+ * color-scheme switches native controls/scrollbars/autofill with it.
+ */
+:root {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+  --color-primary: #a78bfa;
+  --color-gradient-partner: #818cf8;
+  --color-accent: #fb7185;
+  --color-bg: #14121f;
+  --color-surface: #1e1b2e;
+  --color-text: #f1eff9;
+  --color-muted: #9a94b8;
+  --shadow-soft: 0 4px 16px rgb(0 0 0 / 0.35);
 }
 
 /* Brand gradient: add button + header accent bar only (DESIGN.md Do's) */
@@ -44,12 +65,19 @@
   animation: check-draw 0.25s ease-out forwards;
 }
 
+/* The whole theme fades together: card + composer input transition with
+   the body; task rows already carry transition-colors. */
+.transition-theme {
+  transition: background-color 0.3s, color 0.3s;
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
   padding: 24px 16px;
   line-height: 1.5;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 @media (min-width: 1024px) {

@@ -33,7 +33,7 @@ export function Composer() {
         onChange={(event) => setValue(event.target.value)}
         placeholder="¿Qué tienes que hacer?"
         aria-label="Nueva tarea"
-        className="min-w-0 flex-1 rounded-input border border-muted/25 bg-surface px-4 py-3 text-base text-text placeholder:text-muted/70 outline-none transition-shadow focus:border-primary focus:shadow-[0_0_12px_rgba(251,113,133,0.35)] focus:ring-2 focus:ring-primary"
+        className="min-w-0 flex-1 transition-theme rounded-input border border-muted/25 bg-surface px-4 py-3 text-base text-text placeholder:text-muted/70 outline-none focus:border-primary focus:shadow-[0_0_12px_rgba(251,113,133,0.35)] focus:ring-2 focus:ring-primary"
       />
       <button
         type="submit"
